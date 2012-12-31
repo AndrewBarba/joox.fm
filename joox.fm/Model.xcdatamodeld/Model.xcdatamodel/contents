@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Activity" representedClassName="Activity" syncable="YES">
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="JooxList" inverseName="activity" inverseEntity="JooxList" syncable="YES"/>
+        <relationship name="listTrack" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ListTrack" inverseName="activity" inverseEntity="ListTrack" syncable="YES"/>
+        <relationship name="listUser" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ListUser" inverseName="activity" inverseEntity="ListUser" syncable="YES"/>
+    </entity>
+    <entity name="FailedRequest" representedClassName="FailedRequest" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="page" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="list" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="JooxList" inverseName="failedRequests" inverseEntity="JooxList" syncable="YES"/>
+    </entity>
+    <entity name="Invite" representedClassName="Invite" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="playlistID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="playlistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="userFB" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="JooxList" representedClassName="JooxList" isAbstract="YES" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="lastView" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="version" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="list" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="createdLists" inverseEntity="User" syncable="YES"/>
+        <relationship name="failedRequests" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FailedRequest" inverseName="list" inverseEntity="FailedRequest" syncable="YES"/>
+        <relationship name="tracks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ListTrack" inverseName="list" inverseEntity="ListTrack" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ListUser" inverseName="list" inverseEntity="ListUser" syncable="YES"/>
+    </entity>
+    <entity name="ListTrack" representedClassName="ListTrack" isAbstract="YES" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="activity" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="listTrack" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="JooxList" inverseName="tracks" inverseEntity="JooxList" syncable="YES"/>
+        <relationship name="track" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="listTracks" inverseEntity="Track" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="addedTracks" inverseEntity="User" syncable="YES"/>
+        <relationship name="votes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Vote" inverseName="track" inverseEntity="Vote" syncable="YES"/>
+    </entity>
+    <entity name="ListUser" representedClassName="ListUser" isAbstract="YES" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastview" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="activity" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Activity" inverseName="listUser" inverseEntity="Activity" syncable="YES"/>
+        <relationship name="list" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="JooxList" inverseName="users" inverseEntity="JooxList" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="lists" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="Party" representedClassName="Party" parentEntity="JooxList" syncable="YES">
+        <attribute name="jooxID" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="PartyTrack" representedClassName="PartyTrack" parentEntity="ListTrack" syncable="YES">
+        <attribute name="state" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="PartyUser" representedClassName="PartyUser" parentEntity="ListUser" syncable="YES"/>
+    <entity name="Playlist" representedClassName="Playlist" parentEntity="JooxList" syncable="YES">
+        <attribute name="secret" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="PlaylistTrack" representedClassName="PlaylistTrack" parentEntity="ListTrack" syncable="YES"/>
+    <entity name="PlaylistUser" representedClassName="PlaylistUser" parentEntity="ListUser" syncable="YES"/>
+    <entity name="Track" representedClassName="Track" syncable="YES">
+        <attribute name="artworkURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isCached" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="service" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="src" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="streamURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="listTracks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListTrack" inverseName="track" inverseEntity="ListTrack" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fb" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fullName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isFriend" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="addedTracks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListTrack" inverseName="user" inverseEntity="ListTrack" syncable="YES"/>
+        <relationship name="createdLists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="JooxList" inverseName="creator" inverseEntity="JooxList" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ListUser" inverseName="user" inverseEntity="ListUser" syncable="YES"/>
+        <relationship name="votes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Vote" inverseName="user" inverseEntity="Vote" syncable="YES"/>
+    </entity>
+    <entity name="Vote" representedClassName="Vote" syncable="YES">
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="track" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ListTrack" inverseName="votes" inverseEntity="ListTrack" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="votes" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Activity" positionX="-17721" positionY="-11250" width="128" height="120"/>
+        <element name="FailedRequest" positionX="-17721" positionY="-11250" width="128" height="90"/>
+        <element name="Invite" positionX="-17721" positionY="-11250" width="128" height="133"/>
+        <element name="JooxList" positionX="-18162" positionY="-11745" width="128" height="225"/>
+        <element name="ListTrack" positionX="-17579" positionY="-11793" width="128" height="165"/>
+        <element name="ListUser" positionX="-17957" positionY="-11394" width="128" height="135"/>
+        <element name="Party" positionX="-17721" positionY="-11250" width="128" height="60"/>
+        <element name="PartyTrack" positionX="-17721" positionY="-11250" width="128" height="60"/>
+        <element name="PartyUser" positionX="-17721" positionY="-11250" width="128" height="45"/>
+        <element name="Playlist" positionX="-17721" positionY="-11250" width="128" height="60"/>
+        <element name="PlaylistTrack" positionX="-17721" positionY="-11250" width="128" height="45"/>
+        <element name="PlaylistUser" positionX="-17721" positionY="-11250" width="128" height="45"/>
+        <element name="Track" positionX="-17721" positionY="-11250" width="128" height="195"/>
+        <element name="User" positionX="-18432" positionY="-11671" width="128" height="223"/>
+        <element name="Vote" positionX="-17660" positionY="-11493" width="128" height="90"/>
+    </elements>
+</model>
